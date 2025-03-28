@@ -1,0 +1,125 @@
+﻿@model IEnumerable<MapsTest.Models.Marcador>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+
+<!-- JavaScript de Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<!-- CSS de Awesome Markers -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+
+<!-- JavaScript de Awesome Markers -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"></script>
+
+<!-- FontAwesome (para íconos) -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+<h1>Indexwww</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>sadasd
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Latitud)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Longitud)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitud)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitud)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria)
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+<!-- Contenedor del mapa -->
+<div id="map" style="height: 500px; width: 100%;"></div>
+
+<!-- ✅ Carga Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Tu script personalizado (usa Leaflet) -->
+<script>
+
+
+
+    // ✅ Ahora "L" está definido y puedes usarlo
+    // 22.905683, -109.925448
+    const map = L.map('map').setView([22.905683, -109.925448], 13);
+
+    // Añade capa de mapa base (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+
+    const iconosPorCategoria = {
+        azul: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+        }),
+        verde: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+        }),
+        rojo: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        })
+    };
+
+
+    // Cargar marcadores desde C#
+    fetch("/Marcadores/GetMarcadores?nombre=Centro")
+        .then(response => response.json())
+        .then(marcadores => {
+            marcadores.forEach(marcador => {
+                const icono = iconosPorCategoria[marcador.categoria.toLowerCase()] || iconosPorCategoria.azul; // Fallback a "azul"
+
+
+
+                L.marker([marcador.latitud, marcador.longitud], {
+                    icon: icono
+                })
+                    .addTo(map)
+                    .bindPopup(`<b>${marcador.titulo}</b><br>${marcador.descripcion}`);
+            });
+        });
+</script>
