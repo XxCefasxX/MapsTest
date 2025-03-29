@@ -29,7 +29,17 @@
 
 <p>
     <a asp-action="Create">Create New</a>
-</p>sadasd
+</p>
+
+@using (Html.BeginForm("GetMarcadores", "Marcadores", FormMethod.Post))
+{
+    <input type="text" name="colonia" placeholder="Colonia" value="@ViewBag.colonia" />
+    <input type="text" name="calle1" placeholder="Calle 1" value="@ViewBag.calle1" />
+    <input type="text" name="calle2" placeholder="Calle 2" value="@ViewBag.calle2" />
+    <button type="submit">Filtrar</button>
+}
+
+
 <table class="table">
     <thead>
         <tr>
@@ -54,7 +64,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Titulo)
+                @Html.DisplayFor(modelItem => item.Colonia)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Descripcion)
@@ -91,35 +101,48 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+   // const marcadoresGroup = L.featureGroup().addTo(map);
 
-
-    const iconosPorCategoria = {
-        azul: L.icon({
+    const iconos = {
+        Azul: L.icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
         }),
-        verde: L.icon({
+        Verde: L.icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
         }),
-        rojo: L.icon({
+        Rojo: L.icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
         })
     };
 
 
-    // Cargar marcadores desde C#
-    fetch("/Marcadores/GetMarcadores?nombre=Centro")
-        .then(response => response.json())
-        .then(marcadores => {
-            marcadores.forEach(marcador => {
-                const icono = iconosPorCategoria[marcador.categoria.toLowerCase()] || iconosPorCategoria.azul; // Fallback a "azul"
+    // Cargar marcadores desde C# y usar js
+    // fetch("/Marcadores/GetMarcadores?nombre=Centro")
+    //     .then(response => response.json())
+    //     .then(marcadores => {
+    //         marcadores.forEach(marcador => {
+    //             const icono = iconosPorCategoria[marcador.categoria.toLowerCase()] || iconosPorCategoria.azul; // Fallback a "azul"
 
 
 
-                L.marker([marcador.latitud, marcador.longitud], {
-                    icon: icono
-                })
-                    .addTo(map)
-                    .bindPopup(`<b>${marcador.titulo}</b><br>${marcador.descripcion}`);
-            });
-        });
+    //             L.marker([marcador.latitud, marcador.longitud], {
+    //                 icon: icono
+    //             })
+    //                 .addTo(map)
+    //                 .bindPopup(`<b>${marcador.titulo}</b><br>${marcador.descripcion}`);
+    //         });
+    //     });
+    const todosMarcadores = [];
+    @foreach (var marcador in Model)
+    {
+        <text>
+            L.marker([@marcador.Latitud.ToString(),
+            @marcador.Longitud.ToString()],
+            { icon: iconos['@marcador.Categoria'] })
+                .addTo(map)
+                .bindPopup('@Html.Raw(marcador.Titulo)');
+        </text>
+    }
+
+       
 </script>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MapsTest.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MapsTest.Controllers
 {
@@ -17,16 +18,45 @@ namespace MapsTest.Controllers
         {
             _context = context;
         }
-        [HttpGet]
-        public IActionResult GetMarcadores(string nombre="")
+        [HttpPost]
+        public IActionResult GetMarcadores(string colonia="", string calle1 = "", string calle2 = "")
         {
-            var marcadores = _context.Marcadores.Where(m => m.Titulo.Contains(nombre)).ToList();
-            return Json(marcadores);
+            TempData["colonia"] = colonia;
+            TempData["calle1"] = calle1;
+            TempData["calle2"] = calle2;
+            return RedirectToAction("Index");
+            //return View("Index", marcadores);
         }
+
+
         // GET: Marcadores
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Marcadores.ToListAsync());
+            string colonia = TempData["colonia"]?.ToString() ?? "";
+            string calle1 = TempData["calle1"]?.ToString() ?? "";
+            string calle2 = TempData["calle2"]?.ToString() ?? "";
+
+
+            ViewBag.colonia = colonia;
+            ViewBag.calle1 = calle1;
+            ViewBag.calle2 = calle2;
+
+            var query = _context.Marcadores.AsQueryable();
+
+            if (!string.IsNullOrEmpty(colonia))
+            {
+                query = query.Where(m => m.Colonia.Contains(colonia));
+            }
+            if (!string.IsNullOrEmpty(calle1) || !string.IsNullOrEmpty(calle2))
+            {
+                query = query.Where(m =>
+                    (string.IsNullOrEmpty(calle1) || m.Calle1.Contains(calle1) || m.Calle2.Contains(calle1)) &&
+                    (string.IsNullOrEmpty(calle2) || m.Calle1.Contains(calle2) || m.Calle2.Contains(calle2))
+                );
+            }
+
+            var marcadores = query.ToListAsync();
+            return View(await marcadores);
         }
 
         // GET: Marcadores/Details/5

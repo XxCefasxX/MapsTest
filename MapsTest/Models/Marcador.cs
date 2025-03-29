@@ -8,6 +8,9 @@ public partial class Marcador
     public int Id { get; set; }
 
     public string Titulo { get; set; } = null!;
+    public string Colonia { get; set; } = null!;
+    public string Calle1 { get; set; } = null!;
+    public string Calle2 { get; set; } = null!;
 
     public string Descripcion { get; set; } = null!;
 
@@ -15,4 +18,5 @@ public partial class Marcador
 
     public string Longitud { get; set; } = null!;
     public string Categoria { get; set; } = null!;
+   
 }

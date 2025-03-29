@@ -282,3 +282,4 @@ D:\Proyectos\placas calles\pruebas\MapsTest\bin\Debug\net8.0\runtimes\win\lib\ne
 D:\Proyectos\placas calles\pruebas\MapsTest\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 D:\Proyectos\placas calles\pruebas\MapsTest\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\Proyectos\placas calles\pruebas\MapsTest\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+D:\Proyectos\placas calles\pruebas\MapsTest\obj\Debug\net8.0\MapsTest.sourcelink.json
