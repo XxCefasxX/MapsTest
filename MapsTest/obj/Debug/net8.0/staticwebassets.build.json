@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "j2b6/jWMV/wvyXGENiS/TcE1EYdV6usVYCo/OfsFtok=",
+  "Hash": "OVlaq1gVLLqc6EnEK7yeugo2kQY8EQuUItctqafBT8g=",
   "Source": "MapsTest",
   "BasePath": "_content/MapsTest",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\images\\demo.jpeg",
+      "SourceId": "MapsTest",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\",
+      "BasePath": "_content/MapsTest",
+      "RelativePath": "images/demo.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\demo.jpeg"
     },
     {
       "Identity": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\js\\site.js",

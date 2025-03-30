@@ -39,7 +39,11 @@
     <button type="submit">Filtrar</button>
 }
 
-
+<div class="mb-3">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#imageModal">
+        <i class="fas fa-image"></i> Ver Demo
+    </button>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -47,41 +51,84 @@
                 @Html.DisplayNameFor(model => model.Titulo)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Colonia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Calle1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Calle2)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitud)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitud)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Categoria)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Colonia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitud)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitud)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Colonia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Calle1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Calle2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria)
                 </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+
+            </tr>
+        }
     </tbody>
 </table>
+
+
+
+<!-- Modal para mostrar la imagen -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Imagen del Marcador</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="demoplaca">
+               <div class="cl-logo">
+                    <img id="logo-preview" src="@ViewBag.LogoUrl"/>
+               </div>
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label">Seleccionar logo para previsualizar:</label>
+                <input type="file" id="imageSelector" class="form-control" accept="image/*">
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
 <!-- Contenedor del mapa -->
 <div id="map" style="height: 500px; width: 100%;"></div>
 
@@ -101,7 +148,7 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
-   // const marcadoresGroup = L.featureGroup().addTo(map);
+    // const marcadoresGroup = L.featureGroup().addTo(map);
 
     const iconos = {
         Azul: L.icon({
@@ -138,11 +185,36 @@
         <text>
             L.marker([@marcador.Latitud.ToString(),
             @marcador.Longitud.ToString()],
-            { icon: iconos['@marcador.Categoria'] })
+                { icon: iconos['@marcador.Categoria'] })
                 .addTo(map)
                 .bindPopup('@Html.Raw(marcador.Titulo)');
         </text>
     }
 
-       
+        // Ajusta el zoom si hay marcadores
+    @if (Model.Any())
+    {
+        <text>
+                  const bounds = L.latLngBounds(@Json.Serialize(
+            Model.Select(m => new[] { m.Latitud, m.Longitud })
+            ));
+        map.fitBounds(bounds);
+        </text>
+    }
+
+
+        // Vista previa del logo al seleccionar imagen
+        document.getElementById('imageSelector').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const logoPreview = document.getElementById('logo-preview');
+                    logoPreview.src = event.target.result;
+                    logoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
 </script>

@@ -20,3 +20,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+.demoplaca{
+
+    height:230px;
+    background-image:url(../images/demo.jpeg);
+    background-repeat:no-repeat;
+    background-size:contain;
+    border:1px solid #000;
+}
+.cl-logo{
+    height:88%;
+    width:20%;
+    float:right;
+    border:1px solid red;
+}
+.cl-logo img{
+    width:100%;
+}

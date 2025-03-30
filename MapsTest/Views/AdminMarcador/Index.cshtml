@@ -1,0 +1,325 @@
+﻿@model IEnumerable<MapsTest.Models.Marcador>
+
+
+@{
+    var marker = ViewBag.Marcador as Marcador;
+}
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+
+<!-- JavaScript de Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<!-- CSS de Awesome Markers -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+
+<!-- JavaScript de Awesome Markers -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"></script>
+
+<!-- FontAwesome (para íconos) -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+
+
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Colonia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Calle1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Calle2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Latitud)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Longitud)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Colonia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Calle1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Calle2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Latitud)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Longitud)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<!-- Mostrar coordenadas -->
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Coordenadas seleccionadas</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Latitud</label>
+                    <input type="text" id="latitud" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Longitud</label>
+                    <input type="text" id="longitud" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Colonia:</label>
+                @* <input id="colonia" class="form-control" rows="2" readonly></input> *@
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Calle:</label>
+                <input id="calle" class="form-control" rows="2" readonly></input>
+                   
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Calle 2:</label>
+                <input id="calle2" class="form-control" rows="2"></input>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Precio:</label>
+                <input id="precio" class="form-control" rows="2"></input>
+            </div>
+            <!-- Nuevo Dropdown -->
+            <div class="mb-3">
+                <label class="form-label">Categoría</label>
+                @Html.DropDownList(
+                         "CategoriaMarcador",
+                         new SelectList(ViewBag.Categorias, "Value", "Text"),
+                         "Selecciona una categoría",
+                         new { @class = "form-control", id = "dropdownCategoria" }
+                         )
+            </div>
+
+        </div>
+     
+        @*    <button id="btnCopiar" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-copy"></i> Copiar coordenadas
+        </button> *@
+    </div>
+</div>
+
+@using (Html.BeginForm("Crearmarcador", "AdminMarcador", FormMethod.Post))
+{
+    <input type="text" name="Titulo" id="Titulo" value="@marker?.Titulo" placeholder="Título" class="form-control" />
+    <input type="text" name="Latitud" id="Latitud" value="@marker?.Latitud" placeholder="Latitud" class="form-control" />
+    <input type="text" name="Longitud" id="Longitud" value="@marker?.Longitud" placeholder="Longitud" class="form-control" />
+    <input type="text" name="Categoria" id="Categoria" value="@marker?.Categoria" placeholder="Categoría" class="form-control" />
+    <input type="text" name="Colonia" id="Colonia" value="@marker?.Colonia" placeholder="Colonia" class="form-control" />
+    <input type="text" name="Calle1" id="Calle1" value="@marker?.Calle1" placeholder="Calle" class="form-control" />
+    <input type="text" name="Calle2" id="Calle2" value="@marker?.Calle2" placeholder="Calle2" class="form-control" />
+    <input type="text" name="Precio" id="Precio" value="@marker?.Precio" placeholder="Precio" class="form-control" />
+    <input type="text" name="Descripcion" id="Descripcion" value="@marker?.Descripcion" placeholder="Descripcion" class="form-control" />
+    <button type="submit">Crear Marcador</button>
+}
+
+
+<!-- Contenedor del mapa -->
+<div id="map" style="height: 500px; width: 100%;"></div>
+
+<!-- ✅ Carga Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Tu script personalizado (usa Leaflet) -->
+<script>
+
+
+
+    // ✅ Ahora "L" está definido y puedes usarlo
+    // 22.905683, -109.925448
+    const map = L.map('map').setView([22.905683, -109.925448], 13);
+
+    // Añade capa de mapa base (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    // const marcadoresGroup = L.featureGroup().addTo(map);
+
+    const iconos = {
+        Azul: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+        }),
+        Verde: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+        }),
+        Rojo: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        }),
+        Black: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
+        })
+    };
+
+
+    // Cargar marcadores desde C# y usar js
+    // fetch("/Marcadores/GetMarcadores?nombre=Centro")
+    //     .then(response => response.json())
+    //     .then(marcadores => {
+    //         marcadores.forEach(marcador => {
+    //             const icono = iconosPorCategoria[marcador.categoria.toLowerCase()] || iconosPorCategoria.azul; // Fallback a "azul"
+
+
+
+    //             L.marker([marcador.latitud, marcador.longitud], {
+    //                 icon: icono
+    //             })
+    //                 .addTo(map)
+    //                 .bindPopup(`<b>${marcador.titulo}</b><br>${marcador.descripcion}`);
+    //         });
+    //     });
+    const todosMarcadores = [];
+    @foreach (var marcador in Model)
+    {
+        <text>
+            L.marker([@marcador.Latitud.ToString(),
+            @marcador.Longitud.ToString()],
+                { icon: iconos['@marcador.Categoria'] })
+                .addTo(map)
+                .bindPopup('@Html.Raw(marcador.Titulo)');
+        </text>
+    }
+
+        // Variable para el marcador temporal
+        let tempMarker = null;
+    // Al hacer clic en el mapa
+    map.on('click', async function (e) {
+        const { lat, lng } = e.latlng;
+
+
+        // Eliminar marcador anterior si existe
+        if (tempMarker) {
+            map.removeLayer(tempMarker);
+        }
+
+
+        // Crear nuevo marcador
+        tempMarker = L.marker([lat, lng], {
+            icon: iconos['Black'],
+            draggable: true,
+            title: "Arrastra para ajustar"
+        }).addTo(map);
+
+        // Mostrar coordenadas
+        //document.getElementById('coordenadas').value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+
+
+
+        // Actualizar campos de texto
+        document.getElementById('Latitud').value = lat.toFixed(6);
+        document.getElementById('Longitud').value = lng.toFixed(6);
+
+
+        // Obtener dirección (geocodificación inversa)
+        await obtenerDireccion(lat, lng);
+
+        // Actualizar al arrastrar
+        tempMarker.on('dragend', async function () {
+            const newPos = tempMarker.getLatLng();
+            document.getElementById('Latitud').value = lat.toFixed(6);
+            document.getElementById('Longitud').value = lng.toFixed(6);
+            await obtenerDireccion(newPos.lat, newPos.lng);
+        });
+    });
+
+
+
+    // Función para obtener dirección
+    async function obtenerDireccion(lat, lng) {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+            const data = await response.json();
+
+            if (data.address) {
+                console.log(data.address);
+                const address = data.address;
+                let direccionCompleta = "";
+
+
+
+                // Construir dirección con los componentes disponibles
+                if (address.road) direccionCompleta += `${address.road}, `;
+                if (address.suburb) direccionCompleta += `${address.suburb}, `;
+                if (address.city) direccionCompleta += `${address.city}, `;
+                if (address.state) direccionCompleta += `${address.state}, `;
+                if (address.country) direccionCompleta += address.country;
+
+                document.getElementById('Colonia').value = address.suburb;
+                // document.getElementById('colonia').value = address.suburb;
+                document.getElementById('Titulo').value = address.road;
+                document.getElementById('Calle1').value = address.road;
+            } 
+        } catch (error) {
+            console.error("Error al obtener dirección:", error);
+            document.getElementById('direccion').value = "Error al cargar dirección";
+        }
+    }
+
+</script>

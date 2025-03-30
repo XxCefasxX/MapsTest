@@ -18,5 +18,6 @@ public partial class Marcador
 
     public string Longitud { get; set; } = null!;
     public string Categoria { get; set; } = null!;
-   
+    public decimal Precio { get; set; } = 0;
+
 }
