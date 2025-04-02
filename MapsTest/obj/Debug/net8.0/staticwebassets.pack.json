@@ -13,8 +13,28 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\images\\__empty_sign.png",
+      "PackagePath": "staticwebassets\\images\\__empty_sign.png"
+    },
+    {
+      "Id": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\images\\blue_sign.png",
+      "PackagePath": "staticwebassets\\images\\blue_sign.png"
+    },
+    {
       "Id": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\images\\demo.jpeg",
       "PackagePath": "staticwebassets\\images\\demo.jpeg"
+    },
+    {
+      "Id": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\images\\empty_sign.png",
+      "PackagePath": "staticwebassets\\images\\empty_sign.png"
+    },
+    {
+      "Id": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\images\\green_sign.png",
+      "PackagePath": "staticwebassets\\images\\green_sign.png"
+    },
+    {
+      "Id": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\images\\red_sign.png",
+      "PackagePath": "staticwebassets\\images\\red_sign.png"
     },
     {
       "Id": "D:\\Proyectos\\placas calles\\pruebas\\MapsTest\\wwwroot\\js\\site.js",

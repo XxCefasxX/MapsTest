@@ -187,6 +187,7 @@
 
 <!-- ✅ Carga Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="~/js/site.js"></script>
 
 <!-- Tu script personalizado (usa Leaflet) -->
 <script>
@@ -203,20 +204,7 @@
     }).addTo(map);
     // const marcadoresGroup = L.featureGroup().addTo(map);
 
-    const iconos = {
-        Azul: L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-        }),
-        Verde: L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-        }),
-        Rojo: L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-        }),
-        Black: L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
-        })
-    };
+   
 
 
     // Cargar marcadores desde C# y usar js
@@ -281,10 +269,11 @@
         await obtenerDireccion(lat, lng);
 
         // Actualizar al arrastrar
+        const gridSize = 0.0001; // Ajusta este valor según necesites
         tempMarker.on('dragend', async function () {
             const newPos = tempMarker.getLatLng();
-            document.getElementById('Latitud').value = lat.toFixed(6);
-            document.getElementById('Longitud').value = lng.toFixed(6);
+            document.getElementById('Latitud').value = newPos.lat.toFixed(6);
+            document.getElementById('Longitud').value = newPos.lng.toFixed(6);
             await obtenerDireccion(newPos.lat, newPos.lng);
         });
     });
@@ -298,7 +287,7 @@
             const data = await response.json();
 
             if (data.address) {
-                console.log(data.address);
+                // console.log(data.address);
                 const address = data.address;
                 let direccionCompleta = "";
 

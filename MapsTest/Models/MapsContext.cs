@@ -15,6 +15,8 @@ public partial class MapsContext : DbContext
     {
     }
 
+    public virtual DbSet<Cliente> Clientes { get; set; }
+
     public virtual DbSet<Marcador> Marcadores { get; set; }
 
 //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -23,12 +25,27 @@ public partial class MapsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Cliente>(entity =>
+        {
+            entity.HasKey(e => e.Idcliente);
+
+            entity.Property(e => e.Idcliente).HasColumnName("IDCliente");
+            entity.Property(e => e.Correo).HasMaxLength(50);
+            entity.Property(e => e.Nombre).HasMaxLength(50);
+            entity.Property(e => e.Password).HasMaxLength(50);
+        });
+        modelBuilder.Entity<Marcador>().ToTable("Marcadores");
         modelBuilder.Entity<Marcador>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Calle1).HasMaxLength(50);
+            entity.Property(e => e.Calle2).HasMaxLength(50);
+            entity.Property(e => e.Categoria).HasMaxLength(50);
+            entity.Property(e => e.Colonia).HasMaxLength(50);
             entity.Property(e => e.Descripcion).HasMaxLength(50);
             entity.Property(e => e.Latitud).HasMaxLength(50);
             entity.Property(e => e.Longitud).HasMaxLength(50);
+            entity.Property(e => e.Precio).HasColumnType("money");
             entity.Property(e => e.Titulo).HasMaxLength(50);
         });
 

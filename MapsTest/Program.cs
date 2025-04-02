@@ -1,4 +1,6 @@
 using MapsTest.Models;
+using MapsTest.Services.Implementations;
+using MapsTest.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -10,7 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MapsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("connStr")));
 
-
+builder.Services.AddScoped<IEncryptionService, EncryptionService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
